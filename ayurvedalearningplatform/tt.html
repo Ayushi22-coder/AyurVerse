@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Ayurvedic Learning Platform</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="tulsi .html">
+
+  <!-- Firebase (auth only in this demo) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+
+  <style>
+    /* ----------  Base layout ---------- */
+    body{font-family:sans-serif;margin:0;background:#c8facc}
+    header{background:#2e7d32;color:#fff;padding:20px;display:flex;justify-content:space-between;align-items:center}
+    nav a{margin:0 10px;color:#fff;text-decoration:none;font-weight:bold}
+    .section{padding:40px 20px;text-align:center}
+    footer{padding:20px;background:#c8e6c9;text-align:center}
+    body {
+  font-family: sans-serif;
+  margin: 0;
+  background: url('https://static.vecteezy.com/system/resources/thumbnails/037/246/588/small_2x/ai-generated-gudi-padwa-advertisment-background-with-copy-space-free-photo.jpg') repeat;
+  background-size: cover;
+}
+
+
+    /* ----------  Re-usable button & image styles ---------- */
+    button{background:#388e3c;color:#fff;border:none;padding:10px 20px;border-radius:6px;cursor:pointer}
+    .plant-image{width:200px;margin:10px;border-radius:10px;cursor:pointer;transition:transform .2s}
+    .plant-image:hover{transform:scale(1.05)}
+
+    /* ----------  Modal ---------- */
+    .modal{display:none;position:fixed;z-index:2;inset:0;overflow:auto;background:rgba(0,0,0,.4)}
+    .modal-content{background:#fff;margin:15% auto;padding:20px;border-radius:8px;width:300px;text-align:center}
+
+    /* ----------  Books list ---------- */
+    .book-list{max-width:700px;margin:0 auto;text-align:left}
+    .book-item{background:#e6f2d9;border-radius:8px;padding:15px;margin-bottom:20px}
+    .book-item h3{margin:0 0 8px;color:#2e7d32}
+    .book-item a{color:#2e7d32;font-weight:bold;text-decoration:none}
+    .book-item a:hover{text-decoration:underline}
+
+    /* ----------  Quiz buttons ---------- */
+    #quiz-options button{margin:5px;background:#4caf50;border-radius:6px;border:none;padding:10px 20px;color:#fff;font-size:1rem}
+    #quiz-options button:disabled{background:#a5d6a7;cursor:default}
+
+    /* ----------  Key-feature cards ---------- */
+    .feature-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:20px}
+    .feature-card{
+      flex:1 1 250px;max-width:260px;
+      background:#e8f5e9;border:2px solid #2e7d32;border-radius:12px;
+      padding:25px;box-shadow:0 4px 8px rgba(46,125,50,.2);text-align:center
+    }
+    .feature-card h3{margin:0 0 10px;color:#2e7d32;font-size:1.1rem}
+    .feature-card span{font-size:2rem;display:block;margin-bottom:10px}
+  </style>
+</head>
+<body>
+  <!-- ---------- Header ---------- -->
+  <header>
+    <h1>🌿 AyurVerse</h1>
+    <nav>
+      <a href="#chatbot">Chatbot</a>
+      <a href="#garden">Garden</a>
+      <a href="#videos">Videos</a>
+      <a href="#quiz">Quiz</a>
+      <a href="#yoga">Yoga</a>
+      <a href="#books">Books</a>
+      <a href="#login" onclick="document.getElementById('loginModal').style.display='block'">Login</a>
+      <span><i class="fa-solid fa-user"></i></span>
+    </nav>
+  </header>
+  <!-- Ayurvedic Banner Image -->
+<img src="https://wallpaperaccess.com/full/3030637.jpg" alt="Ayurveda Banner" style="width:100%; max-height:450px; object-fit:cover;">
+
+
+  <!-- ---------- Key Features (each in its own frame) ---------- -->
+  <section id="features" class="section">
+    
+    <h1> Key Features</h1>
+    
+   <img src="https://www.nicepng.com/png/full/366-3667192_ayurveda-symbol-png.png" alt="Ayurveda Symbol" style="width:100px; margin-bottom:20px;">
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <span>🗣️</span>
+
+        <h3>Voice Chatbot</h3>
+        Instant Ayurvedic health guidance through voice.
+      </div>
+      <div class="feature-card">
+        <span>🌿</span>
+        <h3> Herbal Garden</h3>
+         garden with clickable medicinal plants.
+      </div>
+      <div class="feature-card">
+        <span><i class="fa-solid fa-stethoscope"></i></span>
+        <h3>Doctor Videos</h3>
+        Curated YouTube clips by Ayurvedic doctors.
+      </div>
+      <div class="feature-card">
+        <span>🧘‍♂️</span>
+        <h3>Daily Yoga</h3>
+        Guided routines for holistic wellness.
+      </div>
+      <div class="feature-card">
+        <span>📚</span>
+        <h3> E-Books</h3>
+        Download essential Ayurveda & yoga texts.
+      </div>
+      <div class="feature-card">
+        <span>📝</span>
+        <h3>Interactive Quiz</h3>
+        Test and track your Ayurveda knowledge.
+      </div>
+      <div class="feature-card">
+        <span>⭐</span>
+        <h3>User Reviews</h3>
+        Community feedback & experience sharing.
+      </div>
+      <div class="feature-card">
+        <span><i class="fa-solid fa-lock"></i></span>
+        <h3> Login</h3>
+        Firebase-powered authentication.
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- Modal Login ---------- -->
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <h2>Login</h2>
+      <input id="email" type="email" placeholder="Email"><br>
+      <input id="password" type="password" placeholder="Password"><br>
+      <button onclick="login()">Login</button>
+      <p id="loginMsg"></p><br>
+      <button onclick="document.getElementById('loginModal').style.display='none'">Close</button>
+    </div>
+  </div>
+  <script>
+async function login() {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  const res = await fetch("/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password })
+  });
+
+  const data = await res.json();
+  document.getElementById("loginMsg").innerText = data.message;
+}
+</script>
+
+
+  <!-- ---------- Chatbot ---------- -->
+  <section id="chatbot" class="section">
+    <!-- <h2>🗣️ Chatbot</h2> -->
+   <div id="chatbotPopup" style="display: none; position: fixed; bottom: 80px; right: 20px; width: 350px; height: 500px; border: 1px solid #ccc; box-shadow: 0 0 10px rgba(0,0,0,0.3); z-index: 1000; background-color: white; border-radius: 10px; overflow: hidden;">
+
+  <div style="background-color: #4CAF50; color: white; padding: 10px; text-align: right;">
+    <iframe src="http://127.0.0.1:5000" width="100%" height="100%" style="border: none;"></iframe>
+    
+  </div>
+  <button onclick="openChatbot()" style="background: none; border: none; color: white; font-size: 16px; cursor: pointer;">✖</button>
+</div>
+
+    
+    <!-- <img src="/Ayurvedic-Lifestyle-Practices.webp" alt="Ayurveda Chatbot" style=float:none;"width:5%; border-radius:5px; margin:5px;"> -->
+<button onclick="window.open('http://127.0.0.1:5000', '_blank')" style="position: fixed; bottom: 20px; right: 20px; padding: 15px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 50px; cursor: pointer; z-index: 1000;">
+  💬 Chat with AyurvedaBot
+</button>
+
+
+    <!-- <img src="/Ayurvedic-Lifestyle-Practices.webp" alt="Ayurveda Banner" style="width:100%; max-height:400px; object-fit:cover;"> -->
+
+
+  </section>
+
+  <!-- ---------- Garden ---------- -->
+  <section id="garden" class="section">
+    <h2>🌱  Herbal Garden</h2>
+    <button onclick="document.getElementById('sceneContainer').style.display='block'">Start Garden Tour</button>
+    <div id="sceneContainer" style="display:none;">
+      <h3>Our Medicinal Plants</h3>
+      <a href="Tulsi.html"><img src="https://cdn.shopify.com/s/files/1/0663/9613/articles/Tulsi.jpg?v=1687508866" class="plant-image" alt="Tulsi"></a>
+      <a href="pudina.html"><img src="https://www.bloomybliss.com/wp-content/uploads/2020/05/IMG_4666.jpg" class="plant-image" alt="Pudina"></a>
+      <a href="neem.html"><img src="https://cdn.siasat.com/wp-content/uploads/2022/12/neem-tree.png" class="plant-image" alt="Neem"></a>
+    </div>
+  </section>
+
+  <!-- ---------- Doctor Videos ---------- -->
+  <section id="videos" class="section">
+    <h2>🎥 Doctor Clips</h2>
+    <iframe width="300" height="180" src="https://www.youtube.com/embed/FZy1oNG2UR4" title="GUT RESET TREATMENT | Dr. Payal Khandelwal" frameborder="0" allowfullscreen></iframe>
+    <p>GUT RESET TREATMENT by Ayurveda | Dr. Payal Khandelwal</p>
+  </section>
+
+  <!-- ---------- Quiz ---------- -->
+  <section id="quiz" class="section">
+    <h2>📚 Ayurvedic Quiz</h2>
+    <p id="quiz-question">Loading question...</p>
+    <div id="quiz-options"></div>
+    <p id="quiz-feedback" style="font-weight:bold;margin-top:10px;"></p>
+    <button id="nextBtn" style="display:none;" onclick="loadNextQuestion()">Next Question</button>
+  </section>
+
+  <!-- ---------- Yoga ---------- -->
+  <section id="yoga" class="section">
+    <h2>🧘‍♀️ Yoga for Wellness</h2>
+    <iframe width="300" height="180" src="https://www.youtube.com/embed/v7AYKMP6rOE" frameborder="0"> </iframe>
+   
+  </section>
+
+  <!-- ---------- Books ---------- -->
+  <section id="books" class="section">
+    <h2>📚 Suggested Ayurveda & Yoga Books</h2>
+    <div class="book-list">
+      <div class="book-item">
+        <h3>Ayurveda: The Science of Self-Healing</h3>
+        <p>By Dr. Vasant Lad – introductory fundamentals.</p>
+        <a href="https://archive.org/details/the-science-of-self-learning/01+-+Principles+of+Self-Learning.mp3" target="_blank">Download PDF</a>
+      </div>
+      <div class="book-item">
+        <h3>Complete Book of Ayurvedic Home Remedies</h3>
+        <p>By Vasant Lad – practical treatments for common ailments.</p>
+        <a href="https://store.ayurveda.com/products/the-complete-book-of-ayurveda-home-remedies-by-dr-vasant-lad" target="_blank">Download PDF</a>
+      </div>
+      <div class="book-item">
+        <h3>Light on Yoga</h3>
+        <p>By B.K.S. Iyengar – definitive guide to yoga postures.</p>
+        <a href="#" target="_blank">Download PDF</a>
+      </div>
+      <div class="book-item">
+        <h3>First Steps for Learning Ayurveda</h3>
+        <p>Beginner-friendly overview of doshas and five elements.</p>
+        <a href="https://ayurvedaforbeginners.com/first-steps-for-learning-ayurveda/" target="_blank">Read Online</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- Reviews ---------- -->
+  <section id="reviews" class="section">
+    <h2>🗣 User Reviews</h2>
+    <form class="review-form" onsubmit="submitReview(event)">
+      <input id="review-name" type="text" placeholder="Name" required>
+      <textarea id="review-text" placeholder="Your review..." required></textarea>
+      <button type="submit">Submit</button>
+    </form>
+    <div id="reviews-list">
+      <p><strong>Riya:</strong> I loved the garden tour!</p>
+      <p><strong>Aman:</strong> Very informative platform.</p>
+    </div>
+    
+        
+  </section>
+
+  <!-- ---------- Footer ---------- -->
+  <footer>
+    <p>© 2025 Ayurvedic Learning Platform</p>
+  </footer>
+
+  <!-- ---------- Firebase & Quiz Script ---------- -->
+  <script>
+    /* Firebase init (replace keys) */
+    firebase.initializeApp({
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_AUTH_DOMAIN",
+      projectId: "YOUR_PROJECT_ID",
+      appId: "YOUR_APP_ID"
+    });
+
+    function login(){
+      const email=document.getElementById("email").value;
+      const password=document.getElementById("password").value;
+      firebase.auth().signInWithEmailAndPassword(email,password)
+        .then(()=>{document.getElementById("loginMsg").innerText="✅ Logged in";
+                   setTimeout(()=>document.getElementById("loginModal").style.display="none",1000);})
+        .catch(err=>{document.getElementById("loginMsg").innerText="❌ "+err.message;});
+    }
+
+    /* -------- Quiz -------- */
+    const quizData=[
+      {question:"Which dosha is associated with air & ether?",options:["Pitta","Vata","Kapha"],answer:"Vata"},
+      {question:"Primary elements of Kapha?",options:["Earth & Water","Fire & Water","Air & Ether"],answer:"Earth & Water"},
+      {question:"Herb renowned for immunity boost?",options:["Ashwagandha","Tulsi","Neem"],answer:"Tulsi"},
+      {question:"'Agni' in Ayurveda stands for?",options:["Digestive fire","Energy","Detox"],answer:"Digestive fire"},
+      {question:"Dosha governing metabolism?",options:["Pitta","Vata","Kapha"],answer:"Pitta"}
+    ];
+    let qIndex=0;
+    const qEl=document.getElementById("quiz-question"),
+          optEl=document.getElementById("quiz-options"),
+          fbEl=document.getElementById("quiz-feedback"),
+          nextBtn=document.getElementById("nextBtn");
+
+    function renderQuestion(){
+      const q=quizData[qIndex];
+      qEl.textContent=q.question;
+      fbEl.textContent="";nextBtn.style.display="none";
+      optEl.innerHTML="";
+      q.options.forEach(opt=>{
+        const b=document.createElement("button");
+        b.textContent=opt;
+        b.onclick=()=>selectAnswer(opt);
+        optEl.appendChild(b);
+      });
+    }
+    function selectAnswer(opt){
+      const correct=quizData[qIndex].answer;
+      fbEl.textContent=opt===correct?"✅ Correct!":"❌ Correct: "+correct;
+      fbEl.style.color=opt===correct?"green":"red";
+      Array.from(optEl.children).forEach(b=>b.disabled=true);
+      nextBtn.style.display="inline-block";
+    }
+    function loadNextQuestion(){
+      qIndex++;
+      if(qIndex<quizData.length){renderQuestion();}
+      else{qEl.textContent="🎉 Quiz completed!";optEl.innerHTML="";fbEl.textContent="";nextBtn.style.display="none";}
+    }
+    renderQuestion();
+
+    /* -------- Reviews -------- */
+    function submitReview(e){
+      e.preventDefault();
+      const name=document.getElementById("review-name").value.trim(),
+            text=document.getElementById("review-text").value.trim();
+      if(name&&text){
+        const p=document.createElement("p");
+        p.innerHTML=`<strong>${name}:</strong> ${text}`;
+        document.getElementById("reviews-list").appendChild(p);
+        e.target.reset();
+      }
+    }
+  </script>
+</body>
+</html>

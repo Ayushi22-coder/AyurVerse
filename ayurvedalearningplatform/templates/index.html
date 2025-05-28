@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ayurveda Chatbot</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap');
+
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background: linear-gradient(to right, #dfe9f3 0%, #ffffff 100%);
+      margin: 0;
+      padding: 0;
+    }
+
+    .chat-container {
+      max-width: 700px;
+      margin: 50px auto;
+      padding: 30px;
+      background: #fff8e1;
+      border-radius: 20px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    h2 {
+      text-align: center;
+      color: #33691e;
+      margin-bottom: 20px;
+    }
+
+    .chat-box {
+      height: 420px;
+      overflow-y: auto;
+      padding: 20px;
+      border: 2px solid #aed581;
+      border-radius: 12px;
+      background: #f9fbe7;
+    }
+
+    .chat-message {
+      margin: 12px 0;
+      padding: 10px;
+      border-radius: 10px;
+      max-width: 80%;
+      word-wrap: break-word;
+    }
+
+    .user-message {
+      text-align: right;
+      background-color: #dcedc8;
+      color: #33691e;
+      margin-left: auto;
+    }
+
+    .bot-message {
+      text-align: left;
+      background-color: #fffde7;
+      color: #795548;
+      margin-right: auto;
+    }
+
+    .input-container {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+    }
+
+    input[type="text"] {
+      flex: 1;
+      padding: 12px;
+      font-size: 16px;
+      border: 2px solid #c5e1a5;
+      border-radius: 10px;
+    }
+
+    button {
+      padding: 12px 18px;
+      background-color: #8bc34a;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #689f38;
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-container">
+    <h2>🌿 Ayurveda Chatbot</h2>
+    <div class="chat-box" id="chat-box"></div>
+    <div class="input-container">
+      <input type="text" id="user-input" placeholder="Ask something about herbs, yoga, health...">
+      <button onclick="sendMessage()">Send</button>
+      <button onclick="startVoiceInput()">🎤</button>
+    </div>
+  </div>
+
+  <script>
+    const chatBox = document.getElementById('chat-box');
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'en-IN';
+    recognition.continuous = false;
+    recognition.interimResults = false;
+
+    function addMessage(message, sender) {
+      const msgDiv = document.createElement('div');
+      msgDiv.className = `chat-message ${sender}-message`;
+      msgDiv.textContent = message;
+      chatBox.appendChild(msgDiv);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function sendMessage() {
+      const input = document.getElementById('user-input');
+      const message = input.value.trim();
+      if (message) {
+        addMessage(message, 'user');
+        input.value = '';
+
+        fetch('/chat', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ message })
+        })
+        .then(response => response.json())
+        .then(data => {
+          const reply = data.reply;
+          addMessage(reply, 'bot');
+          if (shouldSpeak(message)) {
+            speakHindi(reply);
+          }
+        });
+      }
+    }
+
+    function startVoiceInput() {
+      recognition.start();
+    }
+
+    recognition.onresult = function(event) {
+      const transcript = event.results[0][0].transcript;
+      document.getElementById('user-input').value = transcript;
+      sendMessage();
+    };
+
+    recognition.onerror = function(event) {
+      console.error("Voice recognition error:", event.error);
+      alert("Voice input error: " + event.error);
+    };
+
+    function speakHindi(text) {
+      const synth = window.speechSynthesis;
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'hi-IN';
+      synth.speak(utterance);
+    }
+
+    function shouldSpeak(userMessage) {
+      const keywords = ['bol', 'suno', 'speak', 'bataye', 'batana'];
+      return keywords.some(word => userMessage.toLowerCase().includes(word));
+    }
+  </script>
+</body>
+</html>
